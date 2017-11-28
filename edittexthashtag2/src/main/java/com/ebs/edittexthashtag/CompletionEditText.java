@@ -21,12 +21,18 @@ public class CompletionEditText {
     private List<String> list;
     private ActiveHashTag editTextTag;
 
-    public void initEditText(MultiAutoCompleteTextView edit,int color,char tagChar,Context context, final int layout){
+    public void initEditText(MultiAutoCompleteTextView edit,int color,char[] tagChars,Context context, final int layout){
         list = new ArrayList<>();
 
         char[] additionalSymbols = new char[]{'_'};
-        editTextTag = ActiveHashTag.Factory.create(color, tagChar, null, additionalSymbols);
-        editTextTag.operate(edit);
+
+        for (int i = 0; i < tagChars.length; i++) {
+            editTextTag = ActiveHashTag.Factory.create(color, tagChars[i], null, additionalSymbols);
+            editTextTag.operate(edit);
+        }
+
+        /*editTextTag = ActiveHashTag.Factory.create(color, tagChar, null, additionalSymbols);
+        editTextTag.operate(edit);*/
 
         adapterFilter  = new FilteredArrayAdapter<String>(context, layout, list) {
             @Override
@@ -57,23 +63,26 @@ public class CompletionEditText {
         edit.setTokenizer(new SpaceTokenizer());
     }
 
-    public void initTextView(TextView edit, int color, char tagChar, ActiveHashTag.OnHashTagClickListener listener){
+   /* public void initTextView(TextView edit, int color, char tagChar, ActiveHashTag.OnHashTagClickListener listener){
         char[] additionalSymbols = new char[]{'_'};
         editTextTag = ActiveHashTag.Factory.create(color, tagChar, listener, additionalSymbols);
         editTextTag.operate(edit);
-    }
+    }*/
 
-    public void initTextView(TextView edit, int color, ActiveHashTag.OnHashTagClickListener listener){
+    public void initTextView(TextView edit, char[] chars,int color, ActiveHashTag.OnHashTagClickListener listener){
         char[] additionalSymbols = new char[]{'_'};
 
-        editTextTag = ActiveHashTag.Factory.create(color, Constant.AT, listener, additionalSymbols);
-        editTextTag.operate(edit);
+        for (int i = 0; i < chars.length; i++) {
+            editTextTag = ActiveHashTag.Factory.create(color, chars[i], listener, additionalSymbols);
+            editTextTag.operate(edit);
+        }
 
-        editTextTag = ActiveHashTag.Factory.create(color, Constant.DOLLAR, listener, additionalSymbols);
+
+        /*editTextTag = ActiveHashTag.Factory.create(color, Constant.DOLLAR, listener, additionalSymbols);
         editTextTag.operate(edit);
 
         editTextTag = ActiveHashTag.Factory.create(color, Constant.SHARP, listener, additionalSymbols);
-        editTextTag.operate(edit);
+        editTextTag.operate(edit);*/
     }
 
     public ActiveHashTag getEditTextTag() {
